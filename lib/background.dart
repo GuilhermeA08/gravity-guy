@@ -1,12 +1,11 @@
 import 'dart:async';
 
 import 'package:flame/components.dart';
-import 'package:flappybird/main.dart';
+import 'package:flappybird/game.dart';
 
-class Background extends SpriteComponent with HasGameRef<FlappyBirdGame>{
-  
+class Background extends SpriteComponent with HasGameRef<FlappyBirdGame> {
   @override
-  onLoad() async{
+  onLoad() async {
     // TODO: implement onLoad
     super.onLoad();
 

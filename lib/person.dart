@@ -5,7 +5,7 @@ import 'package:flappybird/spike.dart';
 import 'package:flame/sprite.dart';
 
 import 'apple.dart';
-import 'main.dart';
+import 'game.dart';
 
 class Person extends SpriteAnimationComponent
     with
@@ -22,14 +22,14 @@ class Person extends SpriteAnimationComponent
   late SpriteSheet idleSpriteSheet, hitSpriteSheet;
   late SpriteAnimation idleAnimation, hitAnimation;
 //final animation = spriteSheet.createAnimation(0, stepTime: 0.1);
-bool gameOver = false;
+  bool gameOver = false;
   @override
   void onLoad() async {
     //sprite = await gameRef.loadSprite('person.png');
     position = gameRef.size / 2;
     size = Vector2(64.0, 64.0);
     anchor = Anchor.center;
-   
+
     //debugMode = true;
     idleSpriteSheet = SpriteSheet(
       image: await gameRef.images.load('idle.png'),
@@ -47,15 +47,15 @@ bool gameOver = false;
 
     //define a animação atual
     animation = idleAnimation;
-     //add(RectangleHitbox(isSolid: true, size: Vector2(32,32),position: Vector2(200,200),collisionType: CollisionType.active));
-   super.onLoad();
+    //add(RectangleHitbox(isSolid: true, size: Vector2(32,32),position: Vector2(200,200),collisionType: CollisionType.active));
+    super.onLoad();
   }
 
   @override
-  void onCollision(Set<Vector2> points, PositionComponent other) {  
+  void onCollision(Set<Vector2> points, PositionComponent other) {
     if (other is Spike) {
       removeFromParent();
-    }else if(other is Apple) {
+    } else if (other is Apple) {
       ++countApple;
     }
   }
@@ -84,15 +84,13 @@ bool gameOver = false;
     // TODO: implement update
     super.update(dt);
     vy += ay * dt;
-    if(position.y - 40 >= gameRef.size.y){
-      ay=0;
-      vy=0;
+    if (position.y - 40 >= gameRef.size.y) {
+      ay = 0;
+      vy = 0;
       gameOver = true;
       removeFromParent();
     }
     position.x += vx * dt;
     position.y += vy * dt;
-
-    
   }
 }
