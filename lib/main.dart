@@ -53,7 +53,7 @@ class HomeScreen extends StatelessWidget {
                     ));
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
+                    backgroundColor: Colors.pink,
                   ),
                   child: const Text('Começar Jogo'),
                 ),

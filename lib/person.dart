@@ -23,9 +23,9 @@ class Person extends SpriteAnimationComponent
   final GameController gameController = Get.put(GameController());
 
   int countApple = 0;
-  late SpriteSheet idleSpriteSheet, invertedIdleSpriteSheet, hitSpriteSheet;
-  late SpriteAnimation idleAnimation, invertedIdleAnimation, hitAnimation;
-//final animation = spriteSheet.createAnimation(0, stepTime: 0.1);
+  late SpriteSheet idleSpriteSheet, invertedIdleSpriteSheet;
+  late SpriteAnimation idleAnimation, invertedIdleAnimation;
+  //final animation = spriteSheet.createAnimation(0, stepTime: 0.1);
   bool gameOver = false;
   @override
   void onLoad() async {
@@ -50,17 +50,11 @@ class Person extends SpriteAnimationComponent
       image: await gameRef.images.load('invertedrun.png'),
       srcSize: Vector2.all(150.0),
     );
-    hitSpriteSheet = SpriteSheet(
-      image: await gameRef.images.load('hit.png'),
-      srcSize: Vector2.all(32.0),
-    );
 
     idleAnimation = idleSpriteSheet.createAnimation(
         row: 0, stepTime: 0.07, from: 0, to: 8, loop: true);
     invertedIdleAnimation = invertedIdleSpriteSheet.createAnimation(
         row: 0, stepTime: 0.07, from: 0, to: 8, loop: true);
-    hitAnimation = hitSpriteSheet.createAnimation(
-        row: 0, stepTime: 0.2, from: 0, to: 10, loop: false);
 
     //define a animação atual
     animation = idleAnimation;
@@ -73,21 +67,6 @@ class Person extends SpriteAnimationComponent
     print(other);
     print("colidiu com algo");
     super.onCollisionStart(points, other);
-  }
-
-  @override
-  void onTapUp(TapUpEvent event) async {
-    // Do something in response to a tap event
-    //sprite = await gameRef.loadSprite('person2.png');
-    scale = Vector2(1, -2);
-    animation = hitAnimation;
-    print("tocou person");
-  }
-
-  @override
-  void onTapDown(TapDownEvent event) {
-    super.onTapDown(event);
-    scale = Vector2(1.5, 1.5);
   }
 
   void jump() {

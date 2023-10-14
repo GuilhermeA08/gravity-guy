@@ -72,15 +72,9 @@ class FlappyBirdGame extends FlameGame with TapCallbacks {
   void update(double dt) {
     super.update(dt);
 
-    if (_person.gameOver == true) {
-      super.update(dt);
-
-      if (_person.gameOver == true) {
-        tc.text = "GAME OVER\n${gameController.score.value.floor()} Pontos";
-      } else {
-        tc.text = gameController.score.value.floor().toString();
-        gameController.score.value += velocityScore * dt;
-      }
+    if (_person.gameOver != true) {
+      tc.text = gameController.score.value.floor().toString();
+      gameController.score.value += velocityScore * dt;
     }
   }
 
