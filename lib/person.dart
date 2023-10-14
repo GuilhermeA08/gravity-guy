@@ -1,8 +1,10 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
+import 'package:flappybird/gameover.dart';
 import 'package:flappybird/spike.dart';
 import 'package:flame/sprite.dart';
+import 'package:get/get.dart';
 
 import 'apple.dart';
 import 'game.dart';
@@ -13,10 +15,12 @@ class Person extends SpriteAnimationComponent
         HasGameRef<FlappyBirdGame>,
         HasCollisionDetection,
         CollisionCallbacks {
+  Person() : super(size: Vector2(32, 32));
   double vx = 0; //m/s
   double vy = 0; //m/s
   double ax = 0;
-  double ay = 600;
+  double ay = 300;
+  bool inverterVelocidade = false;
 
   int countApple = 0;
   late SpriteSheet idleSpriteSheet, hitSpriteSheet;
@@ -25,6 +29,13 @@ class Person extends SpriteAnimationComponent
   bool gameOver = false;
   @override
   void onLoad() async {
+    add(
+      RectangleHitbox.relative(
+        Vector2(0.5, 0.5), // Ajuste a posição da hitbox conforme necessário
+        // size: Vector2(32, 32), // Ajuste o tamanho da hitbox conforme necessário
+        parentSize: size,
+      ),
+    );
     //sprite = await gameRef.loadSprite('person.png');
     position = gameRef.size / 2;
     size = Vector2(64.0, 64.0);
@@ -52,8 +63,12 @@ class Person extends SpriteAnimationComponent
   }
 
   @override
-  void onCollision(Set<Vector2> points, PositionComponent other) {
+  void onCollisionStart(Set<Vector2> points, PositionComponent other) {
+    print(other);
+    print("colidiu com algo");
+    super.onCollisionStart(points, other);
     if (other is Spike) {
+      print("colisão com spike");
       removeFromParent();
     } else if (other is Apple) {
       ++countApple;
@@ -76,19 +91,26 @@ class Person extends SpriteAnimationComponent
   }
 
   void jump() {
-    vy = -400;
+    inverterVelocidade = !inverterVelocidade;
   }
 
   @override
   void update(double dt) {
-    // TODO: implement update
     super.update(dt);
-    vy += ay * dt;
-    if (position.y - 40 >= gameRef.size.y) {
+
+    // Verifique se o booleano `inverterVelocidade` é verdadeiro e inverta a velocidade vertical
+    if (inverterVelocidade) {
+      vy = -ay;
+    } else {
+      vy = ay;
+    }
+
+    if (position.y - 40 >= gameRef.size.y || position.y <= 0) {
       ay = 0;
       vy = 0;
       gameOver = true;
       removeFromParent();
+      Get.to(GameOverScreen(countApple));
     }
     position.x += vx * dt;
     position.y += vy * dt;

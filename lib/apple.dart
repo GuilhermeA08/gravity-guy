@@ -4,7 +4,6 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flappybird/person.dart';
-import 'package:flappybird/spike.dart';
 import 'package:flame/sprite.dart';
 
 import 'game.dart';
@@ -15,6 +14,7 @@ class Apple extends SpriteAnimationComponent
         HasGameRef<FlappyBirdGame>,
         HasCollisionDetection,
         CollisionCallbacks {
+  Apple() : super(size: Vector2(32, 32));
   double vx = -100; //m/s
   double vy = 0; //m/s
   late final staticHeightApple;
@@ -25,6 +25,14 @@ class Apple extends SpriteAnimationComponent
 
   @override
   void onLoad() async {
+    add(
+      RectangleHitbox.relative(
+        Vector2(0.5, 0.5), // Ajuste a posição da hitbox conforme necessário
+        // size: Vector2(32, 32), // Ajuste o tamanho da hitbox conforme necessário
+        parentSize: size,
+      ),
+    );
+
     staticHeightApple = gameRef.size.y / 2;
     //staticHeightApple = 0;
     //sprite = await gameRef.loadSprite('person.png');
@@ -47,6 +55,7 @@ class Apple extends SpriteAnimationComponent
 
   @override
   void onCollision(Set<Vector2> points, PositionComponent other) {
+    super.onCollision(points, other);
     if (other is Person) {
       removeFromParent();
     }
@@ -64,7 +73,6 @@ class Apple extends SpriteAnimationComponent
 
   @override
   void update(double dt) {
-    // TODO: implement update
     super.update(dt);
     position.x += vx * dt;
     position.y = staticHeightApple + 120 * cos(position.x / 40);
