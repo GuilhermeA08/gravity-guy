@@ -38,13 +38,13 @@ class Person extends SpriteAnimationComponent
     );
     //sprite = await gameRef.loadSprite('person.png');
     position = gameRef.size / 2;
-    size = Vector2(64.0, 64.0);
+    size = Vector2(100.0, 100.0);
     anchor = Anchor.center;
 
     //debugMode = true;
     idleSpriteSheet = SpriteSheet(
-      image: await gameRef.images.load('idle.png'),
-      srcSize: Vector2.all(32.0),
+      image: await gameRef.images.load('spacerun.png'),
+      srcSize: Vector2.all(150.0),
     );
     hitSpriteSheet = SpriteSheet(
       image: await gameRef.images.load('hit.png'),
@@ -52,7 +52,7 @@ class Person extends SpriteAnimationComponent
     );
 
     idleAnimation = idleSpriteSheet.createAnimation(
-        row: 0, stepTime: 0.2, from: 0, to: 6, loop: true);
+        row: 0, stepTime: 0.07, from: 0, to: 8, loop: true);
     hitAnimation = hitSpriteSheet.createAnimation(
         row: 0, stepTime: 0.2, from: 0, to: 10, loop: false);
 

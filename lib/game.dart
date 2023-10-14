@@ -38,9 +38,9 @@ class FlappyBirdGame extends FlameGame with TapCallbacks {
   @override
   Future<void> onLoad() async {
     final images = [
-      loadParallaxImage('bg.png', repeat: ImageRepeat.repeat),
+      loadParallaxImage('day.jpg', repeat: ImageRepeat.repeat),
       loadParallaxImage(
-        'terrain.png',
+        'stone.png',
         repeat: ImageRepeat.repeatX,
         alignment: Alignment.bottomCenter,
         fill: LayerFill.none,
