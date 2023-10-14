@@ -1,11 +1,13 @@
+import 'package:flappybird/game_controller.dart';
 import 'package:flappybird/main.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class GameOverScreen extends StatelessWidget {
   final int score;
+  final GameController gameController = Get.put(GameController());
 
-  const GameOverScreen(this.score, {super.key});
+  GameOverScreen(this.score, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +30,10 @@ class GameOverScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: () => 
+                  onPressed: () => {
+                    gameController.score.value = 0,
                     Get.to(const HomeScreen()),
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red,
                   ),

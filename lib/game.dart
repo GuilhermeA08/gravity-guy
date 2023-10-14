@@ -4,11 +4,10 @@ import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flame/palette.dart';
 import 'package:flame/parallax.dart';
+import 'package:flappybird/game_controller.dart';
 import 'package:flappybird/person.dart';
-import 'package:flappybird/spike.dart';
 import 'package:flutter/material.dart';
-
-import 'apple.dart';
+import 'package:get/get.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,17 +20,18 @@ void main() {
 
 class FlappyBirdGame extends FlameGame with TapCallbacks {
   late Person _person;
-  late Spike _spike;
-  late Apple _apple;
   final scoreStyle = TextPaint(
     style: TextStyle(
       fontSize: 48.0,
       color: BasicPalette.white.color,
     ),
   );
-  double score = 1;
+  
   int velocityScore = 2;
   late TextComponent tc;
+
+  final GameController gameController = Get.put(GameController());
+
   @override
   Future<void> onLoad() async {
     final images = [
@@ -58,20 +58,14 @@ class FlappyBirdGame extends FlameGame with TapCallbacks {
     //cria personagem principal
     _person = Person();
     add(_person);
-    //cria personagem inimigo
-    _spike = Spike();
-    add(_spike);
     //cria texto de pontos
     tc = TextComponent(
-      text: score.floor().toString(),
+      text: gameController.score.value.floor().toString(),
       textRenderer: scoreStyle,
       anchor: Anchor.topCenter,
       position: Vector2(size.x / 2, 40),
     );
     add(tc);
-    //cria maçã
-    _apple = Apple();
-    add(_apple);
   }
 
   @override
@@ -79,12 +73,14 @@ class FlappyBirdGame extends FlameGame with TapCallbacks {
     super.update(dt);
 
     if (_person.gameOver == true) {
-      _spike.vx = 0;
-      _spike.omega = 0;
-      _apple.vx = 0;
-    } else {
-      tc.text = score.floor().toString();
-      score += velocityScore * dt;
+      super.update(dt);
+
+      if (_person.gameOver == true) {
+        tc.text = "GAME OVER\n${gameController.score.value.floor()} Pontos";
+      } else {
+        tc.text = gameController.score.value.floor().toString();
+        gameController.score.value += velocityScore * dt;
+      }
     }
   }
 
