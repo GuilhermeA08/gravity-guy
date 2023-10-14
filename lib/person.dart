@@ -1,12 +1,11 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
+import 'package:flappybird/game_controller.dart';
 import 'package:flappybird/gameover.dart';
-import 'package:flappybird/spike.dart';
 import 'package:flame/sprite.dart';
 import 'package:get/get.dart';
 
-import 'apple.dart';
 import 'game.dart';
 
 class Person extends SpriteAnimationComponent
@@ -21,6 +20,7 @@ class Person extends SpriteAnimationComponent
   double ax = 0;
   double ay = 300;
   bool inverterVelocidade = false;
+  final GameController gameController = Get.put(GameController());
 
   int countApple = 0;
   late SpriteSheet idleSpriteSheet, hitSpriteSheet;
@@ -67,12 +67,6 @@ class Person extends SpriteAnimationComponent
     print(other);
     print("colidiu com algo");
     super.onCollisionStart(points, other);
-    if (other is Spike) {
-      print("colisão com spike");
-      removeFromParent();
-    } else if (other is Apple) {
-      ++countApple;
-    }
   }
 
   @override
@@ -110,7 +104,7 @@ class Person extends SpriteAnimationComponent
       vy = 0;
       gameOver = true;
       removeFromParent();
-      Get.to(GameOverScreen(countApple));
+      Get.to(GameOverScreen(gameController.score.value.floor()));
     }
     position.x += vx * dt;
     position.y += vy * dt;
