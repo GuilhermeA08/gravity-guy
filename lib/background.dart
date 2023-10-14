@@ -9,7 +9,7 @@ class Background extends SpriteComponent with HasGameRef<FlappyBirdGame> {
     // TODO: implement onLoad
     super.onLoad();
 
-    sprite = await gameRef.loadSprite("bg.png");
+    sprite = await gameRef.loadSprite("day.jpg");
     size = gameRef.size;
   }
 }
