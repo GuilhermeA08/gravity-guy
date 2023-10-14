@@ -23,8 +23,8 @@ class Person extends SpriteAnimationComponent
   bool inverterVelocidade = false;
 
   int countApple = 0;
-  late SpriteSheet idleSpriteSheet, hitSpriteSheet;
-  late SpriteAnimation idleAnimation, hitAnimation;
+  late SpriteSheet idleSpriteSheet, invertedIdleSpriteSheet, hitSpriteSheet;
+  late SpriteAnimation idleAnimation, invertedIdleAnimation, hitAnimation;
 //final animation = spriteSheet.createAnimation(0, stepTime: 0.1);
   bool gameOver = false;
   @override
@@ -46,12 +46,18 @@ class Person extends SpriteAnimationComponent
       image: await gameRef.images.load('spacerun.png'),
       srcSize: Vector2.all(150.0),
     );
+    invertedIdleSpriteSheet = SpriteSheet(
+      image: await gameRef.images.load('invertedrun.png'),
+      srcSize: Vector2.all(150.0),
+    );
     hitSpriteSheet = SpriteSheet(
       image: await gameRef.images.load('hit.png'),
       srcSize: Vector2.all(32.0),
     );
 
     idleAnimation = idleSpriteSheet.createAnimation(
+        row: 0, stepTime: 0.07, from: 0, to: 8, loop: true);
+    invertedIdleAnimation = invertedIdleSpriteSheet.createAnimation(
         row: 0, stepTime: 0.07, from: 0, to: 8, loop: true);
     hitAnimation = hitSpriteSheet.createAnimation(
         row: 0, stepTime: 0.2, from: 0, to: 10, loop: false);
@@ -92,6 +98,13 @@ class Person extends SpriteAnimationComponent
 
   void jump() {
     inverterVelocidade = !inverterVelocidade;
+
+    if (animation == idleAnimation) {
+      animation = invertedIdleAnimation;
+    } else if (animation == invertedIdleAnimation) {
+      animation = idleAnimation;
+    }
+
   }
 
   @override

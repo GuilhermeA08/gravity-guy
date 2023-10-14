@@ -16,9 +16,6 @@ void main() {
   //Flame.device.setLandscape();
   runApp(GameWidget(
     game: FlappyBirdGame(),
-    loadingBuilder: (context) {
-      return Text("loading");
-    },
   ));
 }
 
@@ -82,7 +79,6 @@ class FlappyBirdGame extends FlameGame with TapCallbacks {
     super.update(dt);
 
     if (_person.gameOver == true) {
-      tc.text = "GAME OVER\n" + score.floor().toString() + " Pontos";
       _spike.vx = 0;
       _spike.omega = 0;
       _apple.vx = 0;

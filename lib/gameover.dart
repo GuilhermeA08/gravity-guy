@@ -10,29 +10,35 @@ class GameOverScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Game Over'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'Game Over',
-              style: TextStyle(fontSize: 24),
+      body: Stack(
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(image: AssetImage("assets/images/night.jpg"), fit: BoxFit.cover,),
             ),
-            Text(
-              'Pontuação: $score',
-              style: TextStyle(fontSize: 20),
+          ),
+          Center(
+            child: Column(
+              children: <Widget>[
+                Image.asset('assets/images/tgif.gif'),
+                const SizedBox(height: 200),
+                Text(
+                  'Pontuação: $score',
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () => 
+                    Get.to(const HomeScreen()),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                  ),
+                  child: const Text('Retornar à Tela Inicial'),
+                ),
+              ],
             ),
-            ElevatedButton(
-              onPressed: () {
-                Get.to(const HomeScreen());
-              },
-              child: const Text('Reiniciar Jogo'),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
