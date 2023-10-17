@@ -3,18 +3,13 @@ import 'dart:math';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
-import 'package:flappybird/person.dart';
 import 'package:flame/sprite.dart';
+import 'package:gravityguy/person.dart';
 
 import 'game.dart';
 
 class Apple extends SpriteAnimationComponent
-    with
-        TapCallbacks,
-        HasGameRef<FlappyBirdGame>,
-        HasCollisionDetection,
-        GestureHitboxes,
-        CollisionCallbacks {
+    with TapCallbacks, HasGameRef<GravityGuyGame>, CollisionCallbacks {
   double vx = -100; //m/s
   double vy = 0; //m/s
   late final staticHeightApple;
@@ -26,7 +21,11 @@ class Apple extends SpriteAnimationComponent
   @override
   Future<void> onLoad() async {
     super.onLoad();
-    add(RectangleHitbox());
+    add(RectangleHitbox(
+      isSolid: true,
+      collisionType: CollisionType.active,
+    ));
+    debugMode = true;
 
     staticHeightApple = gameRef.size.y / 2;
     //staticHeightApple = 0;
@@ -49,10 +48,10 @@ class Apple extends SpriteAnimationComponent
   }
 
   @override
-  void onCollisionStart(Set<Vector2> points, PositionComponent other) {
-    super.onCollisionStart(points, other);
+  void onCollision(Set<Vector2> points, PositionComponent other) {
+    super.onCollision(points, other);
     if (other is Person) {
-      removeFromParent();
+      // removeFromParent();
     }
   }
 

@@ -4,18 +4,15 @@ import 'package:flame/events.dart';
 
 import 'game.dart';
 
-class Terrain extends SpriteComponent 
-  with
-    TapCallbacks,
-    HasGameRef<GravityGuyGame>,
-    HasCollisionDetection,
-    CollisionCallbacks {
-  
+class Terrain extends SpriteComponent
+    with TapCallbacks, HasGameRef<GravityGuyGame>, CollisionCallbacks {
   late double vx;
   late bool changePosition = false;
 
   @override
   void onLoad() async {
+    add(RectangleHitbox(isSolid: true, collisionType: CollisionType.active));
+    debugMode = true;
     vx = 200;
     sprite = await gameRef.loadSprite('stone.png');
     position = gameRef.size / 2;
@@ -33,7 +30,7 @@ class Terrain extends SpriteComponent
     if (position.x < 0) {
       position.x = 400;
 
-      if(changePosition) {
+      if (changePosition) {
         position.y = gameRef.size.y - 200;
       } else {
         position.y = 200;

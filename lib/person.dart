@@ -3,23 +3,20 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/sprite.dart';
 import 'package:get/get.dart';
+import 'package:gravityguy/terrain.dart';
 
 import 'game.dart';
 import 'game_controller.dart';
 import 'gameover.dart';
 
 class Person extends SpriteAnimationComponent
-    with
-        TapCallbacks,
-        HasGameRef<GravityGuyGame>,
-        GestureHitboxes,
-        HasCollisionDetection,
-        CollisionCallbacks {
+    with TapCallbacks, HasGameRef<GravityGuyGame>, CollisionCallbacks {
   double vx = 0; //m/s
   double vy = 0; //m/s
   double ax = 0;
   double ay = 300;
   bool inverterVelocidade = false;
+  bool gravity = true;
   final GameController gameController = Get.put(GameController());
 
   int countApple = 0;
@@ -30,6 +27,7 @@ class Person extends SpriteAnimationComponent
   @override
   Future<void> onLoad() async {
     print("onLoad person");
+
     add(RectangleHitbox());
 
     print("hitbox person adicionado");
@@ -38,7 +36,7 @@ class Person extends SpriteAnimationComponent
     size = Vector2(100.0, 100.0);
     anchor = Anchor.center;
 
-    //debugMode = true;
+    debugMode = true;
     idleSpriteSheet = SpriteSheet(
       image: await gameRef.images.load('spacerun.png'),
       srcSize: Vector2.all(150.0),
@@ -60,19 +58,31 @@ class Person extends SpriteAnimationComponent
   }
 
   @override
-  void onCollisionStart(Set<Vector2> points, PositionComponent other) {
-    print(other);
-    print("colidiu com algo");
-    super.onCollisionStart(points, other);
+  void onCollision(Set<Vector2> points, PositionComponent other) {
+    if (other is Terrain) {
+      gravity = false;
+    }
+    super.onCollision(points, other);
+  }
+
+  @override
+  void onCollisionEnd(PositionComponent other) {
+    super.onCollisionEnd(other);
+
+    if (other is Terrain) {
+      gravity = true;
+    }
   }
 
   void jump() {
-    inverterVelocidade = !inverterVelocidade;
+    if (!gravity) {
+      inverterVelocidade = !inverterVelocidade;
 
-    if (animation == idleAnimation) {
-      animation = invertedIdleAnimation;
-    } else if (animation == invertedIdleAnimation) {
-      animation = idleAnimation;
+      if (animation == idleAnimation) {
+        animation = invertedIdleAnimation;
+      } else if (animation == invertedIdleAnimation) {
+        animation = idleAnimation;
+      }
     }
   }
 
@@ -81,10 +91,14 @@ class Person extends SpriteAnimationComponent
     super.update(dt);
 
     // Verifique se o booleano `inverterVelocidade` é verdadeiro e inverta a velocidade vertical
-    if (inverterVelocidade) {
-      vy = -ay;
+    if (gravity) {
+      if (inverterVelocidade) {
+        vy = -ay;
+      } else {
+        vy = ay;
+      }
     } else {
-      vy = ay;
+      vy = 0;
     }
 
     if (position.y - 40 >= gameRef.size.y || position.y <= 0) {

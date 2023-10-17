@@ -23,11 +23,7 @@ void main() {
 }
 
 class GravityGuyGame extends FlameGame
-    with TapCallbacks, HasCollisionDetection {
-  GravityGuyGame() : super() {
-    collisionDetection = StandardCollisionDetection();
-  }
-
+    with TapCallbacks, HasCollisionDetection, CollisionCallbacks {
   late Person _person;
   late Apple _apple;
   late Terrain _terrain;
@@ -86,7 +82,7 @@ class GravityGuyGame extends FlameGame
     add(tc);
 
     _apple = Apple();
-    add(_apple);
+    // add(_apple);
   }
 
   @override
