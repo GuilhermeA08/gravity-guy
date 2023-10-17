@@ -1,4 +1,4 @@
-# flappybird
+# gravityguy
 
 A new Flutter project.
 

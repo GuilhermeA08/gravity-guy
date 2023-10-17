@@ -1,17 +1,17 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
-import 'package:flappybird/game_controller.dart';
-import 'package:flappybird/gameover.dart';
 import 'package:flame/sprite.dart';
 import 'package:get/get.dart';
 
 import 'game.dart';
+import 'game_controller.dart';
+import 'gameover.dart';
 
 class Person extends SpriteAnimationComponent
     with
         TapCallbacks,
-        HasGameRef<FlappyBirdGame>,
+        HasGameRef<GravityGuyGame>,
         HasCollisionDetection,
         CollisionCallbacks {
   Person() : super(size: Vector2(32, 32));
