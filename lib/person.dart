@@ -12,9 +12,8 @@ class Person extends SpriteAnimationComponent
     with
         TapCallbacks,
         HasGameRef<FlappyBirdGame>,
-        HasCollisionDetection,
+        GestureHitboxes,
         CollisionCallbacks {
-  Person() : super(size: Vector2(32, 32));
   double vx = 0; //m/s
   double vy = 0; //m/s
   double ax = 0;
@@ -28,15 +27,12 @@ class Person extends SpriteAnimationComponent
   //final animation = spriteSheet.createAnimation(0, stepTime: 0.1);
   bool gameOver = false;
   @override
-  void onLoad() async {
-    add(
-      RectangleHitbox.relative(
-        Vector2(0.5, 0.5), // Ajuste a posição da hitbox conforme necessário
-        // size: Vector2(32, 32), // Ajuste o tamanho da hitbox conforme necessário
-        parentSize: size,
-      ),
-    );
-    //sprite = await gameRef.loadSprite('person.png');
+  Future<void> onLoad() async {
+    print("onLoad person");
+    add(RectangleHitbox());
+
+    print("hitbox person adicionado");
+
     position = gameRef.size / 2;
     size = Vector2(100.0, 100.0);
     anchor = Anchor.center;
@@ -77,7 +73,6 @@ class Person extends SpriteAnimationComponent
     } else if (animation == invertedIdleAnimation) {
       animation = idleAnimation;
     }
-
   }
 
   @override
