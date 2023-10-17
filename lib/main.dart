@@ -1,7 +1,8 @@
 import 'package:flame/game.dart';
-import 'package:flappybird/game.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import 'game.dart';
 
 void main() {
   runApp(const MyApp());
@@ -49,7 +50,7 @@ class HomeScreen extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {
                     Get.to(GameWidget(
-                      game: FlappyBirdGame(),
+                      game: GravityGuyGame(),
                     ));
                   },
                   style: ElevatedButton.styleFrom(

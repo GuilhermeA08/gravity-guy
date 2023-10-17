@@ -5,29 +5,32 @@ import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flame/palette.dart';
 import 'package:flame/parallax.dart';
-import 'package:flappybird/apple.dart';
-import 'package:flappybird/game_controller.dart';
-import 'package:flappybird/person.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gravityguy/apple.dart';
+
+import 'game_controller.dart';
+import 'person.dart';
+import 'terrain.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   Flame.device.fullScreen();
   //Flame.device.setLandscape();
   runApp(GameWidget(
-    game: FlappyBirdGame(),
+    game: GravityGuyGame(),
   ));
 }
 
-class FlappyBirdGame extends FlameGame
+class GravityGuyGame extends FlameGame
     with TapCallbacks, HasCollisionDetection {
-  FlappyBirdGame() : super() {
+  GravityGuyGame() : super() {
     collisionDetection = StandardCollisionDetection();
   }
 
   late Person _person;
   late Apple _apple;
+  late Terrain _terrain;
   final scoreStyle = TextPaint(
     style: TextStyle(
       fontSize: 48.0,
@@ -62,10 +65,17 @@ class FlappyBirdGame extends FlameGame
         baseVelocity: Vector2(50, 0),
       ),
     );
+
     add(parallaxComponent);
+
     //cria personagem principal
     _person = Person();
     add(_person);
+
+    //cria plataformas
+    _terrain = Terrain();
+    add(_terrain);
+
     //cria texto de pontos
     tc = TextComponent(
       text: gameController.score.value.floor().toString(),
