@@ -85,7 +85,7 @@ class GravityGuyGame extends FlameGame
     // Atualiza a variavel time com tempo decorrido
     time += dt;
     // print(time);
-    if (time > 1) {
+    if (time > 1.2) {
       randomizePlatforms();
       time = 0;
     }
@@ -105,7 +105,7 @@ class GravityGuyGame extends FlameGame
   }
 
   Future<void> randomizePlatforms() async {
-    var n = Random().nextInt(5) + 3;
+    var n = Random().nextInt(3) + 5;
     var currentY = randomizeYCoord();
     var currentX = size.x;
 
@@ -114,7 +114,7 @@ class GravityGuyGame extends FlameGame
     if (initialPlataform) {
       currentX = 100.0;
       currentY = 500.0;
-      n = 7;
+      n = 8;
       initialPlataform = false;
     }
 
@@ -137,13 +137,13 @@ class GravityGuyGame extends FlameGame
 
     changePosition = !changePosition;
 
-    //Se changedPosition for true, o y será gerado entre o topo da tela e o meio da tela
-    //Se changedPosition for false, o y será gerado entre o meio da tela e o fim da tela
+    //Se changedPosition for true, o y será gerado entre o topo da tela e o primeiro terço da tela
+    //Se changedPosition for false, o y será gerado entre o meio da tela e o ultimo terço da tela
 
     if (changePosition) {
-      return Random().nextDouble() * (size / 2);
+      return Random().nextDouble() * (size / 3);
     } else {
-      return Random().nextDouble() * (size / 2) + (size / 2);
+      return Random().nextDouble() * (size / 3) + (size / 3) + (size / 3);
     }
   }
 }

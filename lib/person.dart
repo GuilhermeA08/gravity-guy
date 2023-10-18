@@ -14,7 +14,7 @@ class Person extends SpriteAnimationComponent
   double vx = 0; //m/s
   double vy = 0; //m/s
   double ax = 0;
-  double ay = 300;
+  double ay = 400;
   bool inverterVelocidade = false;
   bool gravity = true;
   final GameController gameController = Get.put(GameController());
@@ -33,17 +33,17 @@ class Person extends SpriteAnimationComponent
     print("hitbox person adicionado");
 
     position = gameRef.size / 2;
-    size = Vector2(100.0, 70.0);
+    size = Vector2(70.0, 70.0);
     anchor = Anchor.center;
 
     debugMode = true;
     idleSpriteSheet = SpriteSheet(
       image: await gameRef.images.load('spacerun2.png'),
-      srcSize: Vector2(93.5, 102.0),
+      srcSize: Vector2(93, 100.0),
     );
     invertedIdleSpriteSheet = SpriteSheet(
       image: await gameRef.images.load('invertedrun2.png'),
-      srcSize: Vector2(93.5, 100.0),
+      srcSize: Vector2(93, 100.0),
     );
 
     idleAnimation = idleSpriteSheet.createAnimation(
@@ -64,13 +64,13 @@ class Person extends SpriteAnimationComponent
 
       //Se o personagem está a baixo do chão, mudar o posição do personagem para logo a baixo do chão
       if (points.first.y > other.position.y) {
-        position.y = (other.position.y + other.size.y / 2 + size.y / 2) + 2;
+        position.y = (other.position.y + other.size.y / 2 + size.y / 2);
       }
 
       //Se o personagem está a cima do chão, mudar o posição do personagem para logo a cima do chão
 
       if (points.first.y < other.position.y) {
-        position.y = (other.position.y - other.size.y / 2 - size.y / 2) - 2;
+        position.y = (other.position.y - other.size.y / 2 - size.y / 2);
       }
 
       // Se o personagem colidir com o chão pela esquerda a gravidade continua sendo true
@@ -92,6 +92,13 @@ class Person extends SpriteAnimationComponent
 
   void jump() {
     if (!gravity) {
+      if (inverterVelocidade) {
+        position.y += 10;
+      } else {
+        position.y -= 10;
+      }
+      super.update(0.11);
+
       inverterVelocidade = !inverterVelocidade;
 
       if (animation == idleAnimation) {
