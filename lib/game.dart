@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
@@ -7,8 +9,8 @@ import 'package:flame/palette.dart';
 import 'package:flame/parallax.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gravityguy/apple.dart';
 
+import 'apple.dart';
 import 'game_controller.dart';
 import 'person.dart';
 import 'terrain.dart';
@@ -26,7 +28,7 @@ class GravityGuyGame extends FlameGame
     with TapCallbacks, HasCollisionDetection, CollisionCallbacks {
   late Person _person;
   late Apple _apple;
-  late Terrain _terrain;
+  
   final scoreStyle = TextPaint(
     style: TextStyle(
       fontSize: 48.0,
@@ -36,6 +38,7 @@ class GravityGuyGame extends FlameGame
 
   int velocityScore = 2;
   late TextComponent tc;
+  late bool changePosition = false;
 
   final GameController gameController = Get.put(GameController());
 
@@ -43,18 +46,13 @@ class GravityGuyGame extends FlameGame
   Future<void> onLoad() async {
     final images = [
       loadParallaxImage('day.jpg', repeat: ImageRepeat.repeat),
-      loadParallaxImage(
-        'stone.png',
-        repeat: ImageRepeat.repeatX,
-        alignment: Alignment.bottomCenter,
-        fill: LayerFill.none,
-      ),
     ];
 
     final layers = images.map((image) async => ParallaxLayer(
-          await image,
-          velocityMultiplier: Vector2((images.indexOf(image) + 1) * 2.0, 0),
-        ));
+      await image,
+      velocityMultiplier: Vector2((images.indexOf(image) + 1) * 2.0, 0),
+    ));
+
     final parallaxComponent = ParallaxComponent(
       parallax: Parallax(
         await Future.wait(layers),
@@ -68,9 +66,7 @@ class GravityGuyGame extends FlameGame
     _person = Person();
     add(_person);
 
-    //cria plataformas
-    _terrain = Terrain();
-    add(_terrain);
+    await randomizePlatforms();
 
     //cria texto de pontos
     tc = TextComponent(
@@ -86,7 +82,7 @@ class GravityGuyGame extends FlameGame
   }
 
   @override
-  void update(double dt) {
+  Future<void> update(double dt) async {
     super.update(dt);
 
     if (_person.gameOver != true) {
@@ -101,5 +97,17 @@ class GravityGuyGame extends FlameGame
     // Do something in response to a tap event
     // print("tocou jogo");
     _person.jump();
+  }
+
+  Future<void> randomizePlatforms() async {
+    var n = Random().nextInt(5) + 3;
+    var currentX = 100.0;
+
+    for (var i = 0; i < n; i++) {
+      Terrain terrain = Terrain(currentX, 0.0);
+      add(terrain);
+
+      currentX += 60;
+    }
   }
 }

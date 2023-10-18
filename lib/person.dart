@@ -33,17 +33,17 @@ class Person extends SpriteAnimationComponent
     print("hitbox person adicionado");
 
     position = gameRef.size / 2;
-    size = Vector2(100.0, 100.0);
+    size = Vector2(100.0, 70.0);
     anchor = Anchor.center;
 
     debugMode = true;
     idleSpriteSheet = SpriteSheet(
-      image: await gameRef.images.load('spacerun.png'),
-      srcSize: Vector2.all(150.0),
+      image: await gameRef.images.load('spacerun2.png'),
+      srcSize: Vector2(150.0, 102.0),
     );
     invertedIdleSpriteSheet = SpriteSheet(
-      image: await gameRef.images.load('invertedrun.png'),
-      srcSize: Vector2.all(150.0),
+      image: await gameRef.images.load('invertedrun2.png'),
+      srcSize: Vector2(150.0, 100.0),
     );
 
     idleAnimation = idleSpriteSheet.createAnimation(
