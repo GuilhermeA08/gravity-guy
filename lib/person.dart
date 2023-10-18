@@ -38,12 +38,12 @@ class Person extends SpriteAnimationComponent
 
     debugMode = true;
     idleSpriteSheet = SpriteSheet(
-      image: await gameRef.images.load('spacerun2.png'),
-      srcSize: Vector2(93.5, 102.0),
+      image: await gameRef.images.load('spacerun3.png'),
+      srcSize: Vector2(150.0, 102.0),
     );
     invertedIdleSpriteSheet = SpriteSheet(
-      image: await gameRef.images.load('invertedrun2.png'),
-      srcSize: Vector2(93.5, 100.0),
+      image: await gameRef.images.load('invertedrun3.png'),
+      srcSize: Vector2(150.0, 102.0),
     );
 
     idleAnimation = idleSpriteSheet.createAnimation(
