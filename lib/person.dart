@@ -39,11 +39,11 @@ class Person extends SpriteAnimationComponent
     debugMode = true;
     idleSpriteSheet = SpriteSheet(
       image: await gameRef.images.load('spacerun2.png'),
-      srcSize: Vector2(150.0, 102.0),
+      srcSize: Vector2(93.5, 102.0),
     );
     invertedIdleSpriteSheet = SpriteSheet(
       image: await gameRef.images.load('invertedrun2.png'),
-      srcSize: Vector2(150.0, 100.0),
+      srcSize: Vector2(93.5, 100.0),
     );
 
     idleAnimation = idleSpriteSheet.createAnimation(
@@ -61,6 +61,22 @@ class Person extends SpriteAnimationComponent
   void onCollision(Set<Vector2> points, PositionComponent other) {
     if (other is Terrain) {
       gravity = false;
+
+      //Se o personagem está a baixo do chão, mudar o posição do personagem para logo a baixo do chão
+      if (points.first.y > other.position.y) {
+        position.y = (other.position.y + other.size.y / 2 + size.y / 2) + 2;
+      }
+
+      //Se o personagem está a cima do chão, mudar o posição do personagem para logo a cima do chão
+
+      if (points.first.y < other.position.y) {
+        position.y = (other.position.y - other.size.y / 2 - size.y / 2) - 2;
+      }
+
+      // Se o personagem colidir com o chão pela esquerda a gravidade continua sendo true
+      // if (points.first.x < other.position.x) {
+      //   gravity = true;
+      // }
     }
     super.onCollision(points, other);
   }

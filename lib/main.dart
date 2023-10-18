@@ -30,7 +30,10 @@ class HomeScreen extends StatelessWidget {
         children: [
           Container(
             decoration: const BoxDecoration(
-              image: DecorationImage(image: AssetImage("assets/images/4kgif.gif"), fit: BoxFit.cover,),
+              image: DecorationImage(
+                image: AssetImage("assets/images/4kgif.gif"),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
           Center(
@@ -39,18 +42,24 @@ class HomeScreen extends StatelessWidget {
                 // Logo centralizada
                 //Carregar imagem logo.png
                 const SizedBox(height: 120),
-                Image.asset('assets/images/gglogo.png', width: 300,),
-                const SizedBox(height: 100),
-                ClipOval(
-                    child: Image.asset('assets/images/logo.png', scale: 1,), // <-- Imagem
+                Image.asset(
+                  'assets/images/gglogo.png',
+                  width: 300,
                 ),
                 const SizedBox(height: 100),
-          
+                ClipOval(
+                  child: Image.asset(
+                    'assets/images/logo.png',
+                    scale: 1,
+                  ), // <-- Imagem
+                ),
+                const SizedBox(height: 100),
+
                 // Botão "Começar Jogo"
                 ElevatedButton(
                   onPressed: () {
                     Get.to(GameWidget(
-                      game: GravityGuyGame(),
+                      game: GravityGuyGame(context),
                     ));
                   },
                   style: ElevatedButton.styleFrom(
