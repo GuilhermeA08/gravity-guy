@@ -8,11 +8,10 @@ import 'package:flame/palette.dart';
 import 'package:flame/parallax.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import 'apple.dart';
-import 'game_controller.dart';
-import 'person.dart';
-import 'terrain.dart';
+import 'package:gravityguy/components/apple.dart';
+import 'package:gravityguy/components/person.dart';
+import 'package:gravityguy/components/terrain.dart';
+import 'package:gravityguy/controllers/game_controller.dart';
 
 class GravityGuyGame extends FlameGame
     with TapCallbacks, HasCollisionDetection, CollisionCallbacks {

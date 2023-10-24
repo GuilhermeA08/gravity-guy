@@ -1,6 +1,6 @@
 import 'package:flame/components.dart';
 
-import 'game.dart';
+import '../pages/game.dart';
 
 class Background extends SpriteComponent with HasGameRef<GravityGuyGame> {
   @override

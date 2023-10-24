@@ -1,8 +1,7 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import 'game.dart';
+import 'package:gravityguy/pages/game.dart';
 
 void main() {
   runApp(const MyApp());

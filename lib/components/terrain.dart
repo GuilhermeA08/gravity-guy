@@ -1,8 +1,7 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
-
-import 'game.dart';
+import 'package:gravityguy/pages/game.dart';
 
 class Terrain extends SpriteComponent
     with TapCallbacks, HasGameRef<GravityGuyGame>, CollisionCallbacks {

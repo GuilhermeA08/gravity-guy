@@ -3,11 +3,10 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/sprite.dart';
 import 'package:get/get.dart';
-import 'package:gravityguy/terrain.dart';
-
-import 'game.dart';
-import 'game_controller.dart';
-import 'gameover.dart';
+import 'package:gravityguy/components/terrain.dart';
+import 'package:gravityguy/controllers/game_controller.dart';
+import 'package:gravityguy/pages/game.dart';
+import 'package:gravityguy/pages/gameover.dart';
 
 class Person extends SpriteAnimationComponent
     with TapCallbacks, HasGameRef<GravityGuyGame>, CollisionCallbacks {
@@ -35,7 +34,7 @@ class Person extends SpriteAnimationComponent
     print("hitbox person adicionado");
 
     position = gameRef.size / 2;
-    size = Vector2(70.0, 70.0);
+    size = Vector2(100.0, 70.0);
     anchor = Anchor.center;
 
     // debugMode = true;
@@ -60,18 +59,18 @@ class Person extends SpriteAnimationComponent
   }
 
   @override
-  void onCollision(Set<Vector2> points, PositionComponent other) {
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     if (other is Terrain) {
       gravity = false;
 
       //Se o personagem está a baixo do chão, mudar o posição do personagem para logo a baixo do chão
-      if (points.first.y > other.position.y) {
+      if (intersectionPoints.first.y > other.position.y) {
         position.y = (other.position.y + other.size.y / 2 + size.y / 2) - 3;
       }
 
       //Se o personagem está a cima do chão, mudar o posição do personagem para logo a cima do chão
 
-      if (points.first.y < other.position.y) {
+      if (intersectionPoints.first.y < other.position.y) {
         position.y = (other.position.y - other.size.y / 2 - size.y / 2) + 3;
       }
 
@@ -80,7 +79,7 @@ class Person extends SpriteAnimationComponent
       //   gravity = true;
       // }
     }
-    super.onCollision(points, other);
+    super.onCollision(intersectionPoints, other);
   }
 
   @override
@@ -116,7 +115,7 @@ class Person extends SpriteAnimationComponent
   }
 
   @override
-  void update(double dt) {
+  void update(double dt) async{
     // Verifique se o booleano `inverterVelocidade` é verdadeiro e inverta a velocidade vertical
     if (gravity) {
       if (inverterVelocidade) {
@@ -133,6 +132,9 @@ class Person extends SpriteAnimationComponent
       vy = 0;
       gameOver = true;
       removeFromParent();
+
+      await gameController.insert();
+
       Get.off(GameOverScreen(gameController.score.value.floor()));
     }
     // position.x += vx * dt;

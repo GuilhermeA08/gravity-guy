@@ -5,7 +5,7 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/sprite.dart';
 
-import 'game.dart';
+import '../pages/game.dart';
 import 'person.dart';
 
 class Apple extends SpriteAnimationComponent
