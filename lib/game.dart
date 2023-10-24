@@ -66,11 +66,13 @@ class GravityGuyGame extends FlameGame
     await randomizePlatforms();
 
     //cria texto de pontos
+    //texto deve ficar a frente de todos os outros componentes
     tc = TextComponent(
       text: gameController.score.value.floor().toString(),
       textRenderer: scoreStyle,
       anchor: Anchor.topCenter,
       position: Vector2(size.x / 2, 40),
+      priority: layers.length + 1,
     );
     add(tc);
 
@@ -80,12 +82,10 @@ class GravityGuyGame extends FlameGame
 
   @override
   Future<void> update(double dt) async {
-    super.update(dt);
-
     // Atualiza a variavel time com tempo decorrido
     time += dt;
     // print(time);
-    if (time > 1.2) {
+    if (time > 1.1) {
       randomizePlatforms();
       time = 0;
     }
@@ -95,12 +95,14 @@ class GravityGuyGame extends FlameGame
       gameController.score.value += velocityScore * dt;
     }
     _apple.vx = 0;
+
+    super.update(dt);
   }
 
   @override
-  void onTapUp(TapUpEvent event) {
+  void onTapDown(TapDownEvent event) {
     // Do something in response to a tap event
-    // print("tocou jogo");
+    print("tocou jogo");
     _person.jump();
   }
 
@@ -109,8 +111,9 @@ class GravityGuyGame extends FlameGame
     var currentY = randomizeYCoord();
     var currentX = size.x;
 
-    print("Y gerado $currentY");
+    // print("Y gerado $currentY");
 
+    // Se for a primeira plataforma, ela será criada na posição inicial
     if (initialPlataform) {
       currentX = 100.0;
       currentY = 500.0;
@@ -121,7 +124,7 @@ class GravityGuyGame extends FlameGame
     for (var i = 0; i < n; i++) {
       Terrain terrain = Terrain(currentX, currentY);
       add(terrain);
-      print("terreno criado $i");
+      // print("terreno criado $i");
 
       currentX += 60;
     }
@@ -141,9 +144,9 @@ class GravityGuyGame extends FlameGame
     //Se changedPosition for false, o y será gerado entre o meio da tela e o ultimo terço da tela
 
     if (changePosition) {
-      return Random().nextDouble() * (size / 3);
+      return Random().nextDouble() * (size / 3) + 30;
     } else {
-      return Random().nextDouble() * (size / 3) + (size / 3) + (size / 3);
+      return Random().nextDouble() * (size / 3) + (size / 3) + (size / 3) - 30;
     }
   }
 }

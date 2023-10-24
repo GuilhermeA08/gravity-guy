@@ -31,26 +31,8 @@ class Terrain extends SpriteComponent
     super.update(dt);
     position.x -= vx * dt;
 
-    if (position.x < 0) {
+    if (position.x < -100) {
       removeFromParent();
     }
   }
-
-  // @override
-  // void update(double dt) {
-  //   super.update(dt);
-  //   position.x -= vx * dt;
-
-  //   if (position.x < 0) {
-  //     position.x = 400;
-
-  //     if (changePosition) {
-  //       position.y = gameRef.size.y - 200;
-  //     } else {
-  //       position.y = 200;
-  //     }
-
-  //     changePosition = !changePosition;
-  //   }
-  // }
 }

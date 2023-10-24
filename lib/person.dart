@@ -15,6 +15,8 @@ class Person extends SpriteAnimationComponent
   double vy = 0; //m/s
   double ax = 0;
   double ay = 400;
+
+  var pulos = 0;
   bool inverterVelocidade = false;
   bool gravity = true;
   final GameController gameController = Get.put(GameController());
@@ -36,7 +38,7 @@ class Person extends SpriteAnimationComponent
     size = Vector2(70.0, 70.0);
     anchor = Anchor.center;
 
-    debugMode = true;
+    // debugMode = true;
     idleSpriteSheet = SpriteSheet(
       image: await gameRef.images.load('spacerun3.png'),
       srcSize: Vector2(150.0, 102.0),
@@ -64,13 +66,13 @@ class Person extends SpriteAnimationComponent
 
       //Se o personagem está a baixo do chão, mudar o posição do personagem para logo a baixo do chão
       if (points.first.y > other.position.y) {
-        position.y = (other.position.y + other.size.y / 2 + size.y / 2);
+        position.y = (other.position.y + other.size.y / 2 + size.y / 2) - 3;
       }
 
       //Se o personagem está a cima do chão, mudar o posição do personagem para logo a cima do chão
 
       if (points.first.y < other.position.y) {
-        position.y = (other.position.y - other.size.y / 2 - size.y / 2);
+        position.y = (other.position.y - other.size.y / 2 - size.y / 2) + 3;
       }
 
       // Se o personagem colidir com o chão pela esquerda a gravidade continua sendo true
@@ -91,13 +93,17 @@ class Person extends SpriteAnimationComponent
   }
 
   void jump() {
+    // Se o personagem estiver no chão, ele pode pular
     if (!gravity) {
+      gravity = true;
+
       if (inverterVelocidade) {
         position.y += 10;
       } else {
         position.y -= 10;
       }
-      super.update(0.11);
+
+      update(0.019701);
 
       inverterVelocidade = !inverterVelocidade;
 
@@ -111,8 +117,6 @@ class Person extends SpriteAnimationComponent
 
   @override
   void update(double dt) {
-    super.update(dt);
-
     // Verifique se o booleano `inverterVelocidade` é verdadeiro e inverta a velocidade vertical
     if (gravity) {
       if (inverterVelocidade) {
@@ -129,9 +133,11 @@ class Person extends SpriteAnimationComponent
       vy = 0;
       gameOver = true;
       removeFromParent();
-      Get.to(GameOverScreen(gameController.score.value.floor()));
+      Get.off(GameOverScreen(gameController.score.value.floor()));
     }
-    position.x += vx * dt;
+    // position.x += vx * dt;
     position.y += vy * dt;
+    // print(dt);
+    super.update(dt);
   }
 }
